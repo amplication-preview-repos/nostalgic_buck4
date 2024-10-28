@@ -1,0 +1,66 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(uuid())
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+model PaymentGateway {
+  bankSlipPrice Float
+  createdAt     DateTime @default(now())
+  id            String   @id @default(uuid())
+  logo          Json?
+  name          String
+  updatedAt     DateTime @updatedAt
+}
+
+model SignProvider {
+  createdAt DateTime @default(now())
+  id        String   @id @default(uuid())
+  name      String
+  signPrice Float
+  updatedAt DateTime @updatedAt
+}
+
+model City {
+  createdAt DateTime  @default(now())
+  customers Customer?
+  ibgeCode  String    @unique
+  id        String    @id @default(uuid())
+  name      String
+  uf        String
+  updatedAt DateTime  @updatedAt
+}
+
+model Customer {
+  address       String?
+  address2      String?
+  addressNumber String?
+  cityId        City?    @relation(fields: [cityIdId], references: [id])
+  cityIdId      String?  @unique
+  cpfCnpj       String
+  createdAt     DateTime @default(now())
+  district      String?
+  email         String?
+  fantasyName   String?
+  id            String   @id @default(uuid())
+  name          String
+  notes         String?
+  phone         String?
+  updatedAt     DateTime @updatedAt
+  zipCode       String?
+}
